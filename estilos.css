@@ -1,78 +1,137 @@
+/* Estilo general */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
-}
-
-h1, h2 {
+    background-color: #f8f9fa;
+    color: #333;
     text-align: center;
 }
 
-/* Estilo del formulario */
-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px #ccc;
+/* Encabezado */
+h1, h2 {
+    color: #007bff;
+    margin-bottom: 10px;
 }
 
+/* Formularios */
+form {
+    background: white;
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+form h2 {
+    text-align: center;
+}
+
+/* Inputs y etiquetas */
 input, textarea, select, button {
-    margin: 10px 0;
+    width: calc(100% - 20px);
     padding: 10px;
+    margin: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
+    display: block;
 }
 
+/* Estilos para checkbox */
 fieldset {
+    border: none;
     margin-top: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #aaa;
 }
 
 fieldset legend {
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
-label {
-    display: block;
-    margin-top: 5px;
+fieldset label {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 /* Botón */
 button {
-    background-color: green;
+    background-color: #28a745;
     color: white;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: darkgreen;
+    background-color: #218838;
 }
 
-/* Estilo de la lista de juegos */
-ul {
-    list-style: none;
+/* Lista de juegos */
+#lista-juegos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     padding: 0;
+    list-style: none;
 }
 
+/* Tarjeta de juego */
 li {
     background: white;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px #ccc;
+    width: 300px;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
-/* Imágenes de los juegos */
-img {
-    display: block;
-    margin: auto;
+li img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
     border-radius: 5px;
 }
+
+li strong {
+    font-size: 18px;
+    color: #333;
+}
+
+li a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* Filtros */
+#filtros {
+    margin: 20px auto;
+    max-width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+#filtros input {
+    width: 45%;
+}
+/* Ajuste para que "Requiere Lectoescritura" no se superponga */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+}
+
+.checkbox-container input {
+    width: auto;
+}
+

@@ -7,26 +7,43 @@
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <h1>Registro de Juegos de Mesa</h1>
+
+    <h1>🎲 Gestión de Juegos de Mesa 🎲</h1>
 
     <form id="formulario-login">
+        <h2>🔐 Iniciar Sesión</h2>
         <input type="text" id="usuario" placeholder="Usuario" required>
         <input type="password" id="contraseña" placeholder="Contraseña" required>
         <button type="submit">Iniciar Sesión</button>
     </form>
 
     <form id="formulario-juego" style="display:none;">
-        <h2>Agregar Nuevo Juego</h2>
-        <input type="text" id="nombre" placeholder="Nombre del juego" required>
-        <input type="url" id="foto" placeholder="URL de la imagen" required>
-        <textarea id="descripcion" placeholder="Descripción" required></textarea>
-        <input type="url" id="video" placeholder="URL del video tutorial" required>
-        <label>
+        <h2>➕ Agregar Nuevo Juego</h2>
+
+        <label>Nombre del juego:</label>
+        <input type="text" id="nombre" required>
+
+        <label>URL de la imagen:</label>
+        <input type="url" id="foto" required>
+
+        <label>Descripción:</label>
+        <textarea id="descripcion" required></textarea>
+
+        <label>URL del video tutorial:</label>
+        <input type="url" id="video" required>
+
+        <label class="checkbox-container">
             <input type="checkbox" id="videoescritura"> ¿Requiere videoescritura?
-        </label>
-        <input type="number" id="cantidad" placeholder="Cantidad disponible" required>
-        <input type="number" id="jugadores_min" placeholder="Jugadores mínimos" required>
-        <input type="number" id="jugadores_max" placeholder="Jugadores máximos" required>
+        </label>    
+
+        <label>Cantidad disponible:</label>
+        <input type="number" id="cantidad" required>
+
+        <label>Jugadores mínimos:</label>
+        <input type="number" id="jugadores_min" required>
+
+        <label>Jugadores máximos:</label>
+        <input type="number" id="jugadores_max" required>
 
         <fieldset>
             <legend>Capacidades</legend>
@@ -41,8 +58,12 @@
         <button type="submit">Guardar</button>
     </form>
 
-    <h2>Lista de Juegos</h2>
-    <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
+    <h2>📚 Lista de Juegos</h2>
+
+    <div id="filtros">
+        <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
+    </div>
+
     <ul id="lista-juegos"></ul>
 
     <script src="script.js"></script>

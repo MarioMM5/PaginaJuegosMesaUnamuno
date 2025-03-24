@@ -70,6 +70,7 @@ async function mostrarJuegos() {
         });
 }
 
+
 // Cargar juegos al inicio
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
 mostrarJuegos();
