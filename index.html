@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Juegos de Mesa</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <h1>Registro de Juegos de Mesa</h1>
+
+    <form id="formulario">
+        <input type="text" id="nombre" placeholder="Nombre del juego" required>
+        <input type="url" id="foto" placeholder="URL de la imagen" required>
+        <textarea id="descripcion" placeholder="Descripción" required></textarea>
+        <input type="url" id="video" placeholder="URL del video tutorial" required>
+        <label>
+            <input type="checkbox" id="videoescritura"> ¿Requiere videoescritura?
+        </label>
+        <input type="number" id="cantidad" placeholder="Cantidad disponible" required>
+        <input type="number" id="jugadores_min" placeholder="Jugadores mínimos" required>
+        <input type="number" id="jugadores_max" placeholder="Jugadores máximos" required>
+
+        <fieldset>
+            <legend>Capacidades</legend>
+            <label><input type="checkbox" value="Memoria"> Memoria</label>
+            <label><input type="checkbox" value="Atención"> Atención</label>
+            <label><input type="checkbox" value="Visoespacial"> Visoespacial</label>
+            <label><input type="checkbox" value="Colores"> Colores</label>
+            <label><input type="checkbox" value="Pensamiento Computacional"> Pensamiento Computacional</label>
+            <label><input type="checkbox" value="Circuitos"> Circuitos</label>
+        </fieldset>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <h2>Lista de Juegos</h2>
+    <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
+    <ul id="lista-juegos"></ul>
+
+    <script src="script.js"></script>
+</body>
+</html>
