@@ -9,7 +9,14 @@
 <body>
     <h1>Registro de Juegos de Mesa</h1>
 
-    <form id="formulario">
+    <form id="formulario-login">
+        <input type="text" id="usuario" placeholder="Usuario" required>
+        <input type="password" id="contraseña" placeholder="Contraseña" required>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <form id="formulario-juego" style="display:none;">
+        <h2>Agregar Nuevo Juego</h2>
         <input type="text" id="nombre" placeholder="Nombre del juego" required>
         <input type="url" id="foto" placeholder="URL de la imagen" required>
         <textarea id="descripcion" placeholder="Descripción" required></textarea>

@@ -1,4 +1,23 @@
-document.getElementById("formulario").addEventListener("submit", async function (e) {
+const usuarioValido = "TIC";
+const contraseñaValida = "unamunoJuegos";
+
+// Manejo del formulario de login
+document.getElementById("formulario-login").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const usuario = document.getElementById("usuario").value;
+    const contraseña = document.getElementById("contraseña").value;
+
+    if (usuario === usuarioValido && contraseña === contraseñaValida) {
+        alert("Autenticación exitosa. Ahora puedes agregar juegos.");
+        document.getElementById("formulario-login").style.display = "none";
+        document.getElementById("formulario-juego").style.display = "block";
+    } else {
+        alert("Usuario o contraseña incorrectos.");
+    }
+});
+
+// Manejo del formulario de juegos
+document.getElementById("formulario-juego").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const capacidades = [...document.querySelectorAll("fieldset input:checked")].map(el => el.value);
@@ -24,7 +43,7 @@ document.getElementById("formulario").addEventListener("submit", async function 
     if (respuesta.ok) {
         alert("Juego agregado correctamente");
         mostrarJuegos();
-        this.reset(); // Limpiar el formulario
+        this.reset();
     } else {
         alert("Error al guardar el juego");
     }
