@@ -9,6 +9,7 @@ h1, h2 {
     text-align: center;
 }
 
+/* Estilo del formulario */
 form {
     display: flex;
     flex-direction: column;
@@ -20,17 +21,42 @@ form {
     box-shadow: 0px 0px 10px #ccc;
 }
 
-input, textarea, button {
-    margin: 5px 0;
-    padding: 8px;
+input, textarea, select, button {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
 }
 
+fieldset {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+fieldset legend {
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin-top: 5px;
+}
+
+/* Botón */
 button {
     background-color: green;
     color: white;
     cursor: pointer;
 }
 
+button:hover {
+    background-color: darkgreen;
+}
+
+/* Estilo de la lista de juegos */
 ul {
     list-style: none;
     padding: 0;
@@ -39,11 +65,12 @@ ul {
 li {
     background: white;
     padding: 10px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 5px;
     box-shadow: 0px 0px 5px #ccc;
 }
 
+/* Imágenes de los juegos */
 img {
     display: block;
     margin: auto;
