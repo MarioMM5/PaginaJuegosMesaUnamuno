@@ -27,7 +27,7 @@ document.getElementById("formulario-juego").addEventListener("submit", async fun
         foto: document.getElementById("foto").value,
         descripcion: document.getElementById("descripcion").value,
         video: document.getElementById("video").value,
-        videoescritura: document.getElementById("videoescritura").checked,
+        videoescritura: document.getElementById("videoescritura").checked, // Ahora es true/false correctamente
         cantidad: document.getElementById("cantidad").value,
         jugadores_min: document.getElementById("jugadores_min").value,
         jugadores_max: document.getElementById("jugadores_max").value,
@@ -52,6 +52,8 @@ document.getElementById("formulario-juego").addEventListener("submit", async fun
 // Mostrar juegos en la lista
 async function mostrarJuegos() {
     const filtro = document.getElementById("filtro").value.toLowerCase();
+    const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
+
     const respuesta = await fetch("http://localhost:3000/juegos");
     const juegos = await respuesta.json();
     const lista = document.getElementById("lista-juegos");
@@ -59,18 +61,20 @@ async function mostrarJuegos() {
     lista.innerHTML = "";
     juegos
         .filter(j => j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro)))
+        .filter(j => !requiereLectoescritura || j.videoescritura) // Filtra por lectoescritura si está activado
         .forEach(juego => {
             let li = document.createElement("li");
             li.innerHTML = `<img src="${juego.foto}" width="100"><br>
-                <strong>${juego.nombre}</strong> (${juego.jugadores_min}-${juego.jugadores_max} jugadores) <br>
+                <strong>${juego.nombre}</strong> (${juego.jugadores_min}-${juego.jugadores_max} jugadores)<br>
                 ${juego.descripcion} <br>
                 <a href="${juego.video}" target="_blank">Ver Tutorial</a> <br>
-                <em>Capacidades: ${juego.capacidades.join(", ")}</em>`;
+                <em>Capacidades: ${juego.capacidades.join(", ")}</em><br>
+                <strong>${juego.videoescritura ? "📝 Requiere lectoescritura" : "✅ No requiere lectoescritura"}</strong>`;
             lista.appendChild(li);
         });
 }
 
-
 // Cargar juegos al inicio
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
+document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
 mostrarJuegos();
