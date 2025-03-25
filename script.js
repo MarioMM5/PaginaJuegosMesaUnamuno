@@ -115,7 +115,15 @@ async function mostrarJuegos() {
     const filtro = document.getElementById("filtro").value.toLowerCase();
     const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
     const jugadoresFiltro = document.getElementById("filtro-jugadores").value;
-    const capacidadesFiltro = [...document.querySelectorAll("#filtro-capacidades input:checked")].map(el => el.value.toLowerCase());
+
+    // Obtenemos las capacidades seleccionadas como "no necesarias"
+    const capacidadesNoDeseadas = [];
+    if (document.getElementById("filtro-memoria").checked) capacidadesNoDeseadas.push("Memoria");
+    if (document.getElementById("filtro-atencion").checked) capacidadesNoDeseadas.push("Atención");
+    if (document.getElementById("filtro-visoespacial").checked) capacidadesNoDeseadas.push("Visoespacial");
+    if (document.getElementById("filtro-colores").checked) capacidadesNoDeseadas.push("Colores");
+    if (document.getElementById("filtro-pensamiento-computacional").checked) capacidadesNoDeseadas.push("Pensamiento Computacional");
+    if (document.getElementById("filtro-circuitos").checked) capacidadesNoDeseadas.push("Circuitos");
 
     const respuesta = await fetch("http://localhost:3000/juegos");
     const juegos = await respuesta.json();
@@ -123,15 +131,15 @@ async function mostrarJuegos() {
 
     lista.innerHTML = "";
     juegos
-        .filter(j => j.nombre.toLowerCase().includes(filtro)) // Filtra solo por nombre
+        .filter(j => j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro)))
         .filter(j => !requiereLectoescritura || j.videoescritura) // Filtra por lectoescritura si está activado
         .filter(j => {
             if (!jugadoresFiltro) return true; // Si no hay filtro de jugadores, muestra todos
             return j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro; // Filtra por número de jugadores
         })
         .filter(j => {
-            if (capacidadesFiltro.length === 0) return true; // Si no hay filtros de capacidades, muestra todos
-            return j.capacidades.some(c => capacidadesFiltro.includes(c.toLowerCase())); // Filtra por capacidades
+            // Excluye juegos que requieran cualquiera de las capacidades no deseadas
+            return !capacidadesNoDeseadas.some(capacidad => j.capacidades.includes(capacidad));
         })
         .forEach(juego => {
             let li = document.createElement("li");
@@ -145,12 +153,15 @@ async function mostrarJuegos() {
         });
 }
 
-// Cargar juegos al inicio
+// Añadimos los eventListeners para actualizar el filtrado cuando se cambien los checkboxes
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener("change", mostrarJuegos);
+});
+
+// Añadimos también los eventListeners para los filtros de texto y número
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
 document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
 document.getElementById("filtro-jugadores").addEventListener("input", mostrarJuegos);
-document.querySelectorAll("#filtro-capacidades input").forEach(checkbox => {
-    checkbox.addEventListener("change", mostrarJuegos); // Agregar listener para los checkboxes de capacidades
-});
 
+// Inicializar la lista de juegos al cargar
 mostrarJuegos();
