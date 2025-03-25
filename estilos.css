@@ -114,6 +114,34 @@ form textarea {
     border-radius: 4px;
     border: 1px solid #ccc;
 }
+form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+form input[type="password"]:not([type="text"]) {
+    padding-right: 10px; /* Espacio extra para el ícono del ojo */
+}
+form input[type="text"] {
+    padding-right: 10px; /* Espacio extra para el ícono del ojo */
+}
+.input-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px; /* Coloca el ícono en el borde derecho */
+    top: 50%; /* Coloca el ícono en el centro vertical del input */
+    transform: translateY(-80%); /* Ajusta el ícono para que quede perfectamente centrado */
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    user-select: none; /* Evita que el texto se seleccione al hacer clic */
+}
 
 form button {
     padding: 10px 15px;

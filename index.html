@@ -50,7 +50,12 @@
     <form id="formulario-login">
         <h2>🔐 Iniciar Sesión</h2>
         <input type="text" id="usuario" placeholder="Usuario" required>
-        <input type="password" id="contraseña" placeholder="Contraseña" required>
+    
+        <div class="input-container">
+            <input type="password" id="contraseña" placeholder="Contraseña" required>
+            <span id="toggle-contraseña" class="eye-icon" onclick="togglePassword()">👁️</span>
+        </div>
+        
         <button type="submit">Iniciar Sesión</button>
     </form>
 

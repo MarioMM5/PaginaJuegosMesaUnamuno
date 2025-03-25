@@ -1,6 +1,19 @@
 const usuarioValido = "TIC";
 const contraseñaValida = "unamunoJuegos";
 
+function togglePassword() {
+    const contraseñaField = document.getElementById("contraseña");
+    const eyeIcon = document.getElementById("toggle-contraseña");
+    
+    if (contraseñaField.type === "password") {
+        contraseñaField.type = "text"; // Cambia a texto para mostrar la contraseña
+        eyeIcon.textContent = "🙈"; // Cambia el ícono a un ícono de "ojo cerrado"
+    } else {
+        contraseñaField.type = "password"; // Vuelve a ser contraseña para ocultarla
+        eyeIcon.textContent = "👁️"; // Vuelve el ícono a un "ojo abierto"
+    }
+}
+
 // Manejo del formulario de login
 document.getElementById("formulario-login").addEventListener("submit", function (e) {
     e.preventDefault();
