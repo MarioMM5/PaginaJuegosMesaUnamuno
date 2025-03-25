@@ -116,14 +116,11 @@ async function mostrarJuegos() {
     const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
     const jugadoresFiltro = document.getElementById("filtro-jugadores").value;
 
-    // Obtenemos las capacidades seleccionadas como "no necesarias"
-    const capacidadesNoDeseadas = [];
-    if (document.getElementById("filtro-memoria").checked) capacidadesNoDeseadas.push("Memoria");
-    if (document.getElementById("filtro-atencion").checked) capacidadesNoDeseadas.push("Atención");
-    if (document.getElementById("filtro-visoespacial").checked) capacidadesNoDeseadas.push("Visoespacial");
-    if (document.getElementById("filtro-colores").checked) capacidadesNoDeseadas.push("Colores");
-    if (document.getElementById("filtro-pensamiento-computacional").checked) capacidadesNoDeseadas.push("Pensamiento Computacional");
-    if (document.getElementById("filtro-circuitos").checked) capacidadesNoDeseadas.push("Circuitos");
+    // Obtener las capacidades seleccionadas
+    const capacidadesSeleccionadas = [
+        "memoria", "atencion", "visoespacial", "colores", "pensamiento-computacional", "circuitos"
+    ]
+    .filter(id => document.getElementById(`filtro-${id}`).checked);
 
     const respuesta = await fetch("http://localhost:3000/juegos");
     const juegos = await respuesta.json();
@@ -131,15 +128,20 @@ async function mostrarJuegos() {
 
     lista.innerHTML = "";
     juegos
-        .filter(j => j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro)))
-        .filter(j => !requiereLectoescritura || j.videoescritura) // Filtra por lectoescritura si está activado
         .filter(j => {
-            if (!jugadoresFiltro) return true; // Si no hay filtro de jugadores, muestra todos
-            return j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro; // Filtra por número de jugadores
-        })
-        .filter(j => {
-            // Excluye juegos que requieran cualquiera de las capacidades no deseadas
-            return !capacidadesNoDeseadas.some(capacidad => j.capacidades.includes(capacidad));
+            // Filtra por nombre o capacidad
+            const juegoContieneFiltro = j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro));
+
+            // Filtra por lectoescritura
+            const juegoRequiereLectoescritura = !requiereLectoescritura || j.videoescritura;
+
+            // Filtra por número de jugadores
+            const juegoCumpleJugadores = !jugadoresFiltro || (j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro);
+
+            // Filtra por capacidades seleccionadas
+            const juegoContieneCapacidades = capacidadesSeleccionadas.length === 0 || capacidadesSeleccionadas.some(c => j.capacidades.map(cap => cap.toLowerCase()).includes(c));
+
+            return juegoContieneFiltro && juegoRequiereLectoescritura && juegoCumpleJugadores && juegoContieneCapacidades;
         })
         .forEach(juego => {
             let li = document.createElement("li");
@@ -153,15 +155,15 @@ async function mostrarJuegos() {
         });
 }
 
-// Añadimos los eventListeners para actualizar el filtrado cuando se cambien los checkboxes
-document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-    checkbox.addEventListener("change", mostrarJuegos);
-});
-
-// Añadimos también los eventListeners para los filtros de texto y número
+// Cargar juegos al inicio
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
 document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
 document.getElementById("filtro-jugadores").addEventListener("input", mostrarJuegos);
 
-// Inicializar la lista de juegos al cargar
+// Agregar evento de cambio para las capacidades
+const capacidadesCheckboxes = document.querySelectorAll(".capacidades-filtro input[type='checkbox']");
+capacidadesCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", mostrarJuegos);
+});
+
 mostrarJuegos();
