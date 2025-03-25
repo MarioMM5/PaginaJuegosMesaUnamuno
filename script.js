@@ -21,11 +21,41 @@ document.getElementById("formulario-login").addEventListener("submit", function 
     const contraseña = document.getElementById("contraseña").value;
 
     if (usuario === usuarioValido && contraseña === contraseñaValida) {
-        alert("Autenticación exitosa. Ahora puedes agregar juegos.");
+        alert("Autenticación exitosa. Ahora puedes agregar y eliminar juegos.");
         document.getElementById("formulario-login").style.display = "none";
         document.getElementById("formulario-juego").style.display = "block";
+        document.getElementById("formulario-eliminar").style.display = "block"; // Mostrar el formulario de eliminación
     } else {
         alert("Usuario o contraseña incorrectos.");
+    }
+});
+
+// Manejo del formulario de eliminación
+document.getElementById("formulario-eliminar").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const nombreJuego = document.getElementById("nombre-eliminar").value;
+
+    if (!nombreJuego) {
+        alert("Por favor, ingresa el nombre del juego.");
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(`http://localhost:3000/eliminar/${encodeURIComponent(nombreJuego)}`, {
+            method: "DELETE",
+        });
+
+        if (respuesta.ok) {
+            alert("Juego eliminado correctamente");
+            mostrarJuegos(); // Refresca la lista de juegos
+            document.getElementById("nombre-eliminar").value = ''; // Limpia el campo
+        } else {
+            const errorData = await respuesta.json();
+            alert(errorData.error || "Error al eliminar el juego. Verifica que el nombre esté correcto.");
+        }
+    } catch (error) {
+        alert("Hubo un error al intentar eliminar el juego. Intenta nuevamente.");
     }
 });
 

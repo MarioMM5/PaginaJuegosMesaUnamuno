@@ -43,6 +43,24 @@ app.get("/juegos", (req, res) => {
         res.json(rows.map(juego => ({ ...juego, capacidades: JSON.parse(juego.capacidades) })));
     });
 });
+// Eliminar un juego por nombre
+app.delete("/eliminar/:nombre", (req, res) => {
+    const nombreJuego = decodeURIComponent(req.params.nombre); // Decodificamos el nombre recibido
+
+    db.run(`DELETE FROM juegos WHERE nombre = ?`, [nombreJuego], function(err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).json({ error: "Juego no encontrado" });
+        }
+
+        res.json({ message: "Juego eliminado correctamente" });
+    });
+});
+
+
 
 // Iniciar servidor
 app.listen(3000, () => console.log("Servidor en http://localhost:3000"));
