@@ -54,6 +54,7 @@ async function mostrarJuegos() {
     const filtro = document.getElementById("filtro").value.toLowerCase();
     const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
     const jugadoresFiltro = document.getElementById("filtro-jugadores").value;
+    const capacidadesFiltro = [...document.querySelectorAll("#filtro-capacidades input:checked")].map(el => el.value.toLowerCase());
 
     const respuesta = await fetch("http://localhost:3000/juegos");
     const juegos = await respuesta.json();
@@ -61,11 +62,15 @@ async function mostrarJuegos() {
 
     lista.innerHTML = "";
     juegos
-        .filter(j => j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro)))
+        .filter(j => j.nombre.toLowerCase().includes(filtro)) // Filtra solo por nombre
         .filter(j => !requiereLectoescritura || j.videoescritura) // Filtra por lectoescritura si está activado
         .filter(j => {
             if (!jugadoresFiltro) return true; // Si no hay filtro de jugadores, muestra todos
             return j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro; // Filtra por número de jugadores
+        })
+        .filter(j => {
+            if (capacidadesFiltro.length === 0) return true; // Si no hay filtros de capacidades, muestra todos
+            return j.capacidades.some(c => capacidadesFiltro.includes(c.toLowerCase())); // Filtra por capacidades
         })
         .forEach(juego => {
             let li = document.createElement("li");
@@ -83,5 +88,8 @@ async function mostrarJuegos() {
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
 document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
 document.getElementById("filtro-jugadores").addEventListener("input", mostrarJuegos);
+document.querySelectorAll("#filtro-capacidades input").forEach(checkbox => {
+    checkbox.addEventListener("change", mostrarJuegos); // Agregar listener para los checkboxes de capacidades
+});
 
 mostrarJuegos();

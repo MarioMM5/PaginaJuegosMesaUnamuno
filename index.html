@@ -13,23 +13,36 @@
 
     <!-- Sección de Filtros -->
     <div id="filtros">
-        <h2>📚 Buscar Juegos</h2>
-        <div class="filtro-item">
-            <label for="filtro">Buscar por nombre o capacidad:</label>
-            <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
-        </div>
+    <h2>📚 Buscar Juegos</h2>
+    <div class="filtro-item">
+        <label for="filtro">Buscar por nombre:</label>
+        <input type="text" id="filtro" placeholder="Buscar por nombre">
+    </div>
 
-        <div class="filtro-item">
-            <label for="filtro-lectoescritura">
-                <input type="checkbox" id="filtro-lectoescritura"> Requiere lectoescritura
-            </label>
-        </div>
-
-        <div class="filtro-item">
-            <label for="filtro-jugadores">Filtrar por número de jugadores:</label>
-            <input type="number" id="filtro-jugadores" placeholder="Número de jugadores">
+    <div class="filtro-item">
+        <label for="filtro-capacidades">Filtrar por capacidades:</label>
+        <div id="filtro-capacidades">
+            <label><input type="checkbox" value="Memoria"> Memoria</label>
+            <label><input type="checkbox" value="Atención"> Atención</label>
+            <label><input type="checkbox" value="Visoespacial"> Visoespacial</label>
+            <label><input type="checkbox" value="Colores"> Colores</label>
+            <label><input type="checkbox" value="Pensamiento Computacional"> Pensamiento Computacional</label>
+            <label><input type="checkbox" value="Circuitos"> Circuitos</label>
         </div>
     </div>
+
+    <div class="filtro-item">
+        <label for="filtro-lectoescritura">
+            <input type="checkbox" id="filtro-lectoescritura"> Requiere lectoescritura
+        </label>
+    </div>
+
+    <div class="filtro-item">
+        <label for="filtro-jugadores">Filtrar por número de jugadores:</label>
+        <input type="number" id="filtro-jugadores" placeholder="Número de jugadores">
+    </div>
+</div>
+
 
     <ul id="lista-juegos"></ul>
 
