@@ -81,89 +81,121 @@ document.getElementById("formulario-eliminar").addEventListener("submit", async 
 document.getElementById("formulario-juego").addEventListener("submit", async function (e) {
     e.preventDefault();
 
+    // Obtener las capacidades seleccionadas
     const capacidades = [...document.querySelectorAll("fieldset input:checked")].map(el => el.value);
+
+    // Obtener el valor del radio button seleccionado para numeración requerida
+    const numeracionRequerida = document.querySelector('input[name="numeracion"]:checked')?.value || '';
 
     const nuevoJuego = {
         nombre: document.getElementById("nombre").value,
         foto: document.getElementById("foto").value,
         descripcion: document.getElementById("descripcion").value,
         video: document.getElementById("video").value,
-        videoescritura: document.getElementById("videoescritura").checked, // Ahora es true/false correctamente
+        videoescritura: document.getElementById("videoescritura").checked,
         cantidad: document.getElementById("cantidad").value,
         jugadores_min: document.getElementById("jugadores_min").value,
         jugadores_max: document.getElementById("jugadores_max").value,
-        capacidades: capacidades
+        capacidades: capacidades,
+        numeracion_requerida: numeracionRequerida // Asignar el valor seleccionado
     };
 
-    const respuesta = await fetch("http://localhost:3000/agregar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoJuego)
-    });
+    try {
+        const respuesta = await fetch("http://localhost:3000/agregar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevoJuego)
+        });
 
-    if (respuesta.ok) {
-        alert("Juego agregado correctamente");
-        mostrarJuegos();
-        this.reset();
-    } else {
-        alert("Error al guardar el juego");
+        if (respuesta.ok) {
+            alert("Juego agregado correctamente");
+            mostrarJuegos();
+            this.reset(); // Reinicia el formulario
+        } else {
+            alert(respuesta.statusText || "Hubo un error al intentar guardar el juego. Intenta nuevamente.");
+        }
+    } catch (error) {
+        alert("Hubo un error al intentar guardar el juego. Intenta nuevamente.");
     }
 });
-
+function numeracionToNumber(numeracion) {
+    switch (numeracion) {
+        case "Hasta 5":
+            return 5;
+        case "Hasta 10":
+            return 10;
+        case "A partir de 10":
+            return 15; // Asumimos que "A partir de 10" tiene un valor mayor
+        default:
+            return Infinity; // Si no hay numeración, asumimos que no tiene límite
+    }
+}
 // Mostrar juegos en la lista
 async function mostrarJuegos() {
     const filtro = document.getElementById("filtro").value.toLowerCase();
     const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
     const jugadoresFiltro = document.getElementById("filtro-jugadores").value;
 
+    // Obtener el valor del radio button seleccionado para numeración requerida
+    const numeracionFiltro = document.querySelector('input[name="filtro-numeracion"]:checked')?.value || '';
+
     // Obtener las capacidades seleccionadas
     const capacidadesSeleccionadas = [
         "memoria", "atencion", "visoespacial", "colores", "pensamiento-computacional", "circuitos"
-    ]
-    .filter(id => document.getElementById(`filtro-${id}`).checked);
+    ].filter(id => document.getElementById(`filtro-${id}`).checked);
 
-    const respuesta = await fetch("http://localhost:3000/juegos");
-    const juegos = await respuesta.json();
-    const lista = document.getElementById("lista-juegos");
+    try {
+        const respuesta = await fetch("http://localhost:3000/juegos");
+        const juegos = await respuesta.json();
+        const lista = document.getElementById("lista-juegos");
 
-    lista.innerHTML = "";
-    juegos
-        .filter(j => {
-            // Filtra por nombre o capacidad
-            const juegoContieneFiltro = j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro));
+        lista.innerHTML = ""; // Limpiar la lista antes de mostrar los juegos
 
-            // Filtra por lectoescritura
-            const juegoRequiereLectoescritura = !requiereLectoescritura || j.videoescritura;
+        juegos
+            .filter(j => j.nombre.toLowerCase().includes(filtro)) // Filtrar por nombre
+            .filter(j => !requiereLectoescritura || j.videoescritura) // Filtrar por lectoescritura
+            .filter(j => {
+                if (!jugadoresFiltro) return true; // Si no hay filtro de jugadores, mostrar todos
+                return j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro; // Filtrar por número de jugadores
+            })
+            .filter(j => {
+                if (numeracionFiltro === '') return true; // Si no hay filtro de numeración, mostrar todos
 
-            // Filtra por número de jugadores
-            const juegoCumpleJugadores = !jugadoresFiltro || (j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro);
+                // Convertir los valores de numeración a números para comparar
+                const numeracionJuego = numeracionToNumber(j.numeracion_requerida);
+                const numeracionSeleccionada = numeracionToNumber(numeracionFiltro);
 
-            // Filtra por capacidades seleccionadas
-            const juegoContieneCapacidades = capacidadesSeleccionadas.length === 0 || capacidadesSeleccionadas.some(c => j.capacidades.map(cap => cap.toLowerCase()).includes(c));
-
-            return juegoContieneFiltro && juegoRequiereLectoescritura && juegoCumpleJugadores && juegoContieneCapacidades;
-        })
-        .forEach(juego => {
-            let li = document.createElement("li");
-            li.innerHTML = `<img src="${juego.foto}" width="100"><br>
-                <strong>${juego.nombre}</strong> (${juego.jugadores_min}-${juego.jugadores_max} jugadores)<br>
-                ${juego.descripcion} <br>
-                <a href="${juego.video}" target="_blank">Ver Tutorial</a> <br>
-                <em>Capacidades: ${juego.capacidades.join(", ")}</em><br>
-                <strong>${juego.videoescritura ? "📝 Requiere lectoescritura" : "✅ No requiere lectoescritura"}</strong>`;
-            lista.appendChild(li);
-        });
+                // Mostrar juegos con numeración menor o igual al filtro seleccionado
+                return numeracionJuego <= numeracionSeleccionada;
+            })
+            .filter(j => {
+                if (capacidadesSeleccionadas.length === 0) return true; // Si no hay capacidades seleccionadas, mostrar todos
+                // Normalizar las capacidades para comparar correctamente
+                const capacidadesJuego = j.capacidades.map(c => c.toLowerCase());
+                return capacidadesSeleccionadas.some(capacidad => capacidadesJuego.includes(capacidad.toLowerCase()));
+            })
+            .forEach(juego => {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                    <img src="${juego.foto}" width="100"><br>
+                    <strong>${juego.nombre}</strong> (${juego.jugadores_min}-${juego.jugadores_max} jugadores)<br>
+                    ${juego.descripcion} <br>
+                    <a href="${juego.video}" target="_blank">Ver Tutorial</a> <br>
+                    <em>Capacidades: ${juego.capacidades.join(", ")}</em><br>
+                    <strong>${juego.videoescritura ? "📝 Requiere lectoescritura" : "✅ No requiere lectoescritura"}</strong><br>
+                    <strong>Numeración requerida: ${juego.numeracion_requerida || "No especificada"}</strong>`;
+                lista.appendChild(li);
+            });
+    } catch (error) {
+        console.error("Error al obtener los juegos:", error);
+        alert("Hubo un error al cargar los juegos. Intenta nuevamente.");
+    }
 }
 
-// Cargar juegos al inicio
-document.getElementById("filtro").addEventListener("input", mostrarJuegos);
-document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
-document.getElementById("filtro-jugadores").addEventListener("input", mostrarJuegos);
-
-// Agregar evento de cambio para las capacidades
-const capacidadesCheckboxes = document.querySelectorAll(".capacidades-filtro input[type='checkbox']");
-capacidadesCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener("change", mostrarJuegos);
+// Añadir eventListeners para actualizar la lista al cambiar los filtros
+document.querySelectorAll('input[type="checkbox"], input[type="radio"], input[type="text"], input[type="number"]').forEach(input => {
+    input.addEventListener("input", mostrarJuegos);
 });
 
+// Inicializar la lista de juegos al cargar la página
 mostrarJuegos();

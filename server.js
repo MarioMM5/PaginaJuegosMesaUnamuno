@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
@@ -9,7 +10,9 @@ const db = new sqlite3.Database("database.db");
 app.use(cors());
 app.use(express.json());
 
-// Crear tabla si no existe (modificada para incluir numeracion_requerida)
+// Crear tabla si no existe
+// Se asegura que numeracion_requerida pueda ser NULL si no se envía
+// Cambiado a DEFAULT '' para evitar problemas con valores nulos
 db.run(`CREATE TABLE IF NOT EXISTS juegos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
@@ -21,14 +24,13 @@ db.run(`CREATE TABLE IF NOT EXISTS juegos (
     jugadores_min INTEGER NOT NULL,
     jugadores_max INTEGER NOT NULL,
     capacidades TEXT,
-    numeracion_requerida TEXT NOT NULL
+    numeracion_requerida TEXT
 )`);
 
 // Agregar un nuevo juego
 app.post("/agregar", (req, res) => {
-    const { nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades, numeracion_requerida } = req.body;
+    const { nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades, numeracion_requerida} = req.body;
     
-    // Insertar el nuevo juego incluyendo el campo numeracion_requerida
     db.run(`INSERT INTO juegos (nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades, numeracion_requerida) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, JSON.stringify(capacidades), numeracion_requerida],

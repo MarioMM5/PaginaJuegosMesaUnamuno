@@ -53,16 +53,16 @@
         <h3>Numeración requerida</h3>
         <div class="numeracion-filtro">
             <label for="filtro-hasta5">
-                <input type="checkbox" id="filtro-hasta5"> Hasta 5
+                <input type="radio" name="filtro-numeracion" id="filtro-hasta5" value="Hasta 5"> Hasta 5
             </label><br>
             <label for="filtro-hasta10">
-                <input type="checkbox" id="filtro-hasta10"> Hasta 10
+                <input type="radio" name="filtro-numeracion" id="filtro-hasta10" value="Hasta 10"> Hasta 10
             </label><br>
-            <label for="filtro-a partir10">
-                <input type="checkbox" id="filtro-a partir10"> A partir de 10
+            <label for="filtro-a-partir10">
+                <input type="radio" name="filtro-numeracion" id="filtro-a-partir10" value="A partir de 10"> A partir de 10
             </label><br>
             <label for="filtro-no-requiere-contar">
-                <input type="checkbox" id="filtro-no-requiere-contar"> No requiere contar
+                <input type="radio" name="filtro-numeracion" id="filtro-no-requiere-contar" value="No requiere contar"> No requiere contar
             </label><br>
         </div>
     </div>
@@ -135,14 +135,13 @@
             <label for="numeracion-hasta10">
                 <input type="radio" name="numeracion" id="numeracion-hasta10" value="Hasta 10"> Hasta 10
             </label><br>
-            <label for="numeracion-a partir10">
-                <input type="radio" name="numeracion" id="numeracion-a partir10" value="A partir de 10"> A partir de 10
+            <label for="numeracion-a-partir10">
+                <input type="radio" name="numeracion" id="numeracion-a-partir10" value="A partir de 10"> A partir de 10
             </label><br>
             <label for="numeracion-no-requiere-contar">
                 <input type="radio" name="numeracion" id="numeracion-no-requiere-contar" value="No requiere contar"> No requiere contar
             </label><br>
         </div>
-
         <button type="submit">Guardar</button>
     </form>
     <form id="formulario-eliminar" style="display:none;">
