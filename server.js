@@ -9,7 +9,7 @@ const db = new sqlite3.Database("database.db");
 app.use(cors());
 app.use(express.json());
 
-// Crear tabla si no existe
+// Crear tabla si no existe (modificada para incluir numeracion_requerida)
 db.run(`CREATE TABLE IF NOT EXISTS juegos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
@@ -20,15 +20,18 @@ db.run(`CREATE TABLE IF NOT EXISTS juegos (
     cantidad INTEGER NOT NULL,
     jugadores_min INTEGER NOT NULL,
     jugadores_max INTEGER NOT NULL,
-    capacidades TEXT
+    capacidades TEXT,
+    numeracion_requerida TEXT NOT NULL
 )`);
 
 // Agregar un nuevo juego
 app.post("/agregar", (req, res) => {
-    const { nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades } = req.body;
-    db.run(`INSERT INTO juegos (nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, JSON.stringify(capacidades)],
+    const { nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades, numeracion_requerida } = req.body;
+    
+    // Insertar el nuevo juego incluyendo el campo numeracion_requerida
+    db.run(`INSERT INTO juegos (nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, capacidades, numeracion_requerida) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [nombre, foto, descripcion, video, videoescritura, cantidad, jugadores_min, jugadores_max, JSON.stringify(capacidades), numeracion_requerida],
         function (err) {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ id: this.lastID });
@@ -40,9 +43,14 @@ app.post("/agregar", (req, res) => {
 app.get("/juegos", (req, res) => {
     db.all("SELECT * FROM juegos", [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(rows.map(juego => ({ ...juego, capacidades: JSON.parse(juego.capacidades) })));
+        res.json(rows.map(juego => ({ 
+            ...juego, 
+            capacidades: JSON.parse(juego.capacidades), 
+            numeracion_requerida: juego.numeracion_requerida 
+        })));
     });
 });
+
 // Eliminar un juego por nombre
 app.delete("/eliminar/:nombre", (req, res) => {
     const nombreJuego = decodeURIComponent(req.params.nombre); // Decodificamos el nombre recibido
@@ -59,8 +67,6 @@ app.delete("/eliminar/:nombre", (req, res) => {
         res.json({ message: "Juego eliminado correctamente" });
     });
 });
-
-
 
 // Iniciar servidor
 app.listen(3000, () => console.log("Servidor en http://localhost:3000"));

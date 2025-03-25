@@ -49,6 +49,23 @@
             <input type="checkbox" id="filtro-lectoescritura"> Requiere lectoescritura
         </label>
     </div>
+    <div class="filtro-item">
+        <h3>Numeración requerida</h3>
+        <div class="numeracion-filtro">
+            <label for="filtro-hasta5">
+                <input type="checkbox" id="filtro-hasta5"> Hasta 5
+            </label><br>
+            <label for="filtro-hasta10">
+                <input type="checkbox" id="filtro-hasta10"> Hasta 10
+            </label><br>
+            <label for="filtro-a partir10">
+                <input type="checkbox" id="filtro-a partir10"> A partir de 10
+            </label><br>
+            <label for="filtro-no-requiere-contar">
+                <input type="checkbox" id="filtro-no-requiere-contar"> No requiere contar
+            </label><br>
+        </div>
+    </div>
 
     <div class="filtro-item">
         <label for="filtro-jugadores">Filtrar por número de jugadores:</label>
@@ -110,6 +127,21 @@
             <label><input type="checkbox" value="Pensamiento Computacional"> Pensamiento Computacional</label>
             <label><input type="checkbox" value="Circuitos"> Circuitos</label>
         </fieldset>
+        <label>Numeración requerida:</label>
+        <div class="numeracion-requerida">
+            <label for="numeracion-hasta5">
+                <input type="radio" name="numeracion" id="numeracion-hasta5" value="Hasta 5"> Hasta 5
+            </label><br>
+            <label for="numeracion-hasta10">
+                <input type="radio" name="numeracion" id="numeracion-hasta10" value="Hasta 10"> Hasta 10
+            </label><br>
+            <label for="numeracion-a partir10">
+                <input type="radio" name="numeracion" id="numeracion-a partir10" value="A partir de 10"> A partir de 10
+            </label><br>
+            <label for="numeracion-no-requiere-contar">
+                <input type="radio" name="numeracion" id="numeracion-no-requiere-contar" value="No requiere contar"> No requiere contar
+            </label><br>
+        </div>
 
         <button type="submit">Guardar</button>
     </form>
