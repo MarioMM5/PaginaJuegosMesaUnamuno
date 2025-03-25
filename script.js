@@ -42,17 +42,35 @@ document.getElementById("formulario-eliminar").addEventListener("submit", async 
     }
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/eliminar/${encodeURIComponent(nombreJuego)}`, {
-            method: "DELETE",
-        });
+        // Verificamos si el juego existe en la base de datos
+        const respuesta = await fetch(`http://localhost:3000/juegos`);
+        const juegos = await respuesta.json();
+        const juegoExistente = juegos.find(juego => juego.nombre.toLowerCase() === nombreJuego.toLowerCase());
 
-        if (respuesta.ok) {
-            alert("Juego eliminado correctamente");
-            mostrarJuegos(); // Refresca la lista de juegos
-            document.getElementById("nombre-eliminar").value = ''; // Limpia el campo
+        if (!juegoExistente) {
+            alert("No se encontró un juego con ese nombre.");
+            return;
+        }
+
+        // Pedir confirmación al usuario antes de borrar
+        const confirmacion = confirm(`¿Estás seguro de que quieres eliminar el juego "${nombreJuego}"? Esta acción no se puede deshacer.`);
+
+        if (confirmacion) {
+            // Procedemos a eliminar el juego
+            const respuestaEliminar = await fetch(`http://localhost:3000/eliminar/${encodeURIComponent(nombreJuego)}`, {
+                method: "DELETE",
+            });
+
+            if (respuestaEliminar.ok) {
+                alert("Juego eliminado correctamente");
+                mostrarJuegos(); // Refresca la lista de juegos
+                document.getElementById("nombre-eliminar").value = ''; // Limpia el campo
+            } else {
+                const errorData = await respuestaEliminar.json();
+                alert(errorData.error || "Error al eliminar el juego. Verifica que el nombre esté correcto.");
+            }
         } else {
-            const errorData = await respuesta.json();
-            alert(errorData.error || "Error al eliminar el juego. Verifica que el nombre esté correcto.");
+            alert("El juego no fue eliminado.");
         }
     } catch (error) {
         alert("Hubo un error al intentar eliminar el juego. Intenta nuevamente.");
