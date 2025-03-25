@@ -1,137 +1,130 @@
-/* Estilo general */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f8f9fa;
-    color: #333;
-    text-align: center;
+    padding: 0;
+    background-color: #f0f0f0;
 }
 
-/* Encabezado */
-h1, h2 {
-    color: #007bff;
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#filtros {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+#filtros h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.filtro-item {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column; /* Colocamos el contenido en columna */
+}
+
+.filtro-item label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+.filtro-item input[type="checkbox"] {
+    margin-right: 10px; /* Espaciado entre checkbox y texto */
+    align-self: flex-start; /* Alineamos el checkbox al inicio */
+}
+.filtro-item input[type="text"],
+.filtro-item input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.filtro-item input[type="checkbox"] {
+    width: auto;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+
+.filtro-item input[type="number"] {
+    width: auto;
+    display: inline-block;
+}
+
+ul#lista-juegos {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+ul#lista-juegos li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+ul#lista-juegos img {
+    max-width: 100px;
+    display: block;
     margin-bottom: 10px;
 }
 
-/* Formularios */
-form {
-    background: white;
-    max-width: 450px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-form h2 {
-    text-align: center;
-}
-
-/* Inputs y etiquetas */
-input, textarea, select, button {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: block;
-}
-
-/* Estilos para checkbox */
-fieldset {
-    border: none;
-    margin-top: 10px;
-}
-
-fieldset legend {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-fieldset label {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-/* Botón */
-button {
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-/* Lista de juegos */
-#lista-juegos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
-    list-style: none;
-}
-
-/* Tarjeta de juego */
-li {
-    background: white;
-    width: 300px;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-li img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-li strong {
+ul#lista-juegos li strong {
     font-size: 18px;
     color: #333;
 }
 
-li a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+ul#lista-juegos li em {
+    font-style: italic;
 }
 
-li a:hover {
-    text-decoration: underline;
-}
-
-/* Filtros */
-#filtros {
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
     margin: 20px auto;
-    max-width: 500px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+    max-width: 600px;
 }
 
-#filtros input {
-    width: 45%;
-}
-/* Ajuste para que "Requiere Lectoescritura" no se superponga */
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px;
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
 }
 
-.checkbox-container input {
-    width: auto;
+form input[type="text"],
+form input[type="url"],
+form input[type="number"],
+form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
+form button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #45a049;
+}

@@ -4,23 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Juegos de Mesa</title>
-    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyb6sufP3zefX5iY7rK9g6g0qx0P_86ehc7A&s">
     <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyb6sufP3zefX5iY7rK9g6g0qx0P_86ehc7A&s">
 </head>
 <body>
 
     <h1>🎲 Gestión de Juegos de Mesa 🎲</h1>
 
+    <!-- Sección de Filtros -->
     <div id="filtros">
         <h2>📚 Buscar Juegos</h2>
-        <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
-        <label>
-            <input type="checkbox" id="filtro-lectoescritura"> Requiere lectoescritura
-        </label>
+        <div class="filtro-item">
+            <label for="filtro">Buscar por nombre o capacidad:</label>
+            <input type="text" id="filtro" placeholder="Buscar por nombre o capacidad">
+        </div>
+
+        <div class="filtro-item">
+            <label for="filtro-lectoescritura">
+                <input type="checkbox" id="filtro-lectoescritura"> Requiere lectoescritura
+            </label>
+        </div>
+
+        <div class="filtro-item">
+            <label for="filtro-jugadores">Filtrar por número de jugadores:</label>
+            <input type="number" id="filtro-jugadores" placeholder="Número de jugadores">
+        </div>
     </div>
 
     <ul id="lista-juegos"></ul>
 
+    <!-- Formulario de inicio de sesión -->
     <form id="formulario-login">
         <h2>🔐 Iniciar Sesión</h2>
         <input type="text" id="usuario" placeholder="Usuario" required>
@@ -28,32 +41,33 @@
         <button type="submit">Iniciar Sesión</button>
     </form>
 
+    <!-- Formulario para insertar un nuevo juego -->
     <form id="formulario-juego" style="display:none;">
         <h2>➕ Agregar Nuevo Juego</h2>
 
-        <label>Nombre del juego:</label>
+        <label for="nombre">Nombre del juego:</label>
         <input type="text" id="nombre" required>
 
-        <label>URL de la imagen:</label>
+        <label for="foto">URL de la imagen:</label>
         <input type="url" id="foto" required>
 
-        <label>Descripción:</label>
+        <label for="descripcion">Descripción:</label>
         <textarea id="descripcion" required></textarea>
 
-        <label>URL del video tutorial:</label>
+        <label for="video">URL del video tutorial:</label>
         <input type="url" id="video" required>
 
         <label class="checkbox-container">
             <input type="checkbox" id="videoescritura"> ¿Requiere lectoescritura?
         </label>
 
-        <label>Cantidad disponible:</label>
+        <label for="cantidad">Cantidad disponible:</label>
         <input type="number" id="cantidad" required>
 
-        <label>Jugadores mínimos:</label>
+        <label for="jugadores_min">Jugadores mínimos:</label>
         <input type="number" id="jugadores_min" required>
 
-        <label>Jugadores máximos:</label>
+        <label for="jugadores_max">Jugadores máximos:</label>
         <input type="number" id="jugadores_max" required>
 
         <fieldset>

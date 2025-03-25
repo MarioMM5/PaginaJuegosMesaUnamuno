@@ -53,6 +53,7 @@ document.getElementById("formulario-juego").addEventListener("submit", async fun
 async function mostrarJuegos() {
     const filtro = document.getElementById("filtro").value.toLowerCase();
     const requiereLectoescritura = document.getElementById("filtro-lectoescritura").checked;
+    const jugadoresFiltro = document.getElementById("filtro-jugadores").value;
 
     const respuesta = await fetch("http://localhost:3000/juegos");
     const juegos = await respuesta.json();
@@ -62,6 +63,10 @@ async function mostrarJuegos() {
     juegos
         .filter(j => j.nombre.toLowerCase().includes(filtro) || j.capacidades.some(c => c.toLowerCase().includes(filtro)))
         .filter(j => !requiereLectoescritura || j.videoescritura) // Filtra por lectoescritura si está activado
+        .filter(j => {
+            if (!jugadoresFiltro) return true; // Si no hay filtro de jugadores, muestra todos
+            return j.jugadores_min <= jugadoresFiltro && j.jugadores_max >= jugadoresFiltro; // Filtra por número de jugadores
+        })
         .forEach(juego => {
             let li = document.createElement("li");
             li.innerHTML = `<img src="${juego.foto}" width="100"><br>
@@ -77,4 +82,6 @@ async function mostrarJuegos() {
 // Cargar juegos al inicio
 document.getElementById("filtro").addEventListener("input", mostrarJuegos);
 document.getElementById("filtro-lectoescritura").addEventListener("change", mostrarJuegos);
+document.getElementById("filtro-jugadores").addEventListener("input", mostrarJuegos);
+
 mostrarJuegos();
