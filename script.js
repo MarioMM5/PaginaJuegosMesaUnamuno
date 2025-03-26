@@ -172,7 +172,8 @@ async function mostrarJuegos() {
                 if (capacidadesSeleccionadas.length === 0) return true; // Si no hay capacidades seleccionadas, mostrar todos
                 // Normalizar las capacidades para comparar correctamente
                 const capacidadesJuego = j.capacidades.map(c => c.toLowerCase());
-                return capacidadesSeleccionadas.some(capacidad => capacidadesJuego.includes(capacidad.toLowerCase()));
+                // Verificar que todas las capacidades seleccionadas estén presentes en el juego
+                return capacidadesSeleccionadas.every(capacidad => capacidadesJuego.includes(capacidad.toLowerCase()));
             })
             .forEach(juego => {
                 let li = document.createElement("li");
